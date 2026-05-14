@@ -10,9 +10,7 @@ export const getTodos = async (req: Request, res: Response) => {
       where: category
         ? { category_id: Number(category) }
         : undefined,
-      include: {
-        category: true,
-      },
+      include: { category: true },
     })
 
     res.json(todos)
@@ -39,7 +37,7 @@ export const getTodoById = async (req: Request, res: Response) => {
   }
 }
 
-// CREATE TODO
+// CREATE TODO (FIXED - NO CONNECT, SAFE)
 export const createTodo = async (req: Request, res: Response) => {
   try {
     const { title, description, priority, category_id } = req.body
@@ -49,15 +47,9 @@ export const createTodo = async (req: Request, res: Response) => {
         title,
         description,
         priority,
-        category: category_id
-          ? {
-              connect: { id: Number(category_id) },
-            }
-          : undefined,
+        category_id: category_id ? Number(category_id) : null,
       },
-      include: {
-        category: true,
-      },
+      include: { category: true },
     })
 
     res.json(todo)
@@ -67,7 +59,7 @@ export const createTodo = async (req: Request, res: Response) => {
   }
 }
 
-// UPDATE TODO
+// UPDATE TODO (SAFE)
 export const updateTodo = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id)
@@ -79,17 +71,9 @@ export const updateTodo = async (req: Request, res: Response) => {
         title,
         description,
         priority,
-        category: category_id
-          ? {
-              connect: { id: Number(category_id) },
-            }
-          : {
-              disconnect: true,
-            },
+        category_id: category_id ? Number(category_id) : null,
       },
-      include: {
-        category: true,
-      },
+      include: { category: true },
     })
 
     res.json(todo)
@@ -130,9 +114,7 @@ export const toggleTodo = async (req: Request, res: Response) => {
 
     const updated = await prisma.todo.update({
       where: { id },
-      data: {
-        completed: !todo.completed,
-      },
+      data: { completed: !todo.completed },
     })
 
     res.json(updated)
