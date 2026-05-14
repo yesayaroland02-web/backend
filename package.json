@@ -4,7 +4,7 @@
   "dev": "ts-node-dev src/server.ts",
   "build": "tsc",
   "start": "node dist/server.js",
-  "postinstall": "prisma generate --schema=prisma/schema.prisma"
+  "postinstall": "prisma generate --schema=./prisma/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
