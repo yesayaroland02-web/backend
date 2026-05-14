@@ -7,7 +7,7 @@ import categoryRoutes from './routes/categoryRoutes'
 const app = express()
 
 app.use(cors({
-  origin: "https://frontend-nine-wheat-37.vercel.app"
+  origin: "*"
 }))
 
 app.use(express.json())
