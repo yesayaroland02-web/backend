@@ -39,7 +39,7 @@ export const getTodoById = async (req: Request, res: Response) => {
 }
 
 // CREATE
-export const createTodo = async (req: Request, res: Response) => {
+export const createTodo = async (req, res) => {
   try {
     const { title, description, priority, category_id } = req.body
 
@@ -48,8 +48,15 @@ export const createTodo = async (req: Request, res: Response) => {
         title,
         description,
         priority,
-        category_id: category_id ? Number(category_id) : null,
+        category: category_id
+          ? {
+              connect: { id: Number(category_id) }
+            }
+          : undefined
       },
+      include: {
+        category: true
+      }
     })
 
     res.json(todo)
@@ -60,7 +67,7 @@ export const createTodo = async (req: Request, res: Response) => {
 }
 
 // UPDATE
-export const updateTodo = async (req: Request, res: Response) => {
+export const updateTodo = async (req, res) => {
   try {
     const id = Number(req.params.id)
     const { title, description, priority, category_id } = req.body
@@ -71,8 +78,17 @@ export const updateTodo = async (req: Request, res: Response) => {
         title,
         description,
         priority,
-        category_id: category_id ? Number(category_id) : null,
+        category: category_id
+          ? {
+              connect: { id: Number(category_id) }
+            }
+          : {
+              disconnect: true
+            }
       },
+      include: {
+        category: true
+      }
     })
 
     res.json(todo)
@@ -81,7 +97,6 @@ export const updateTodo = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Failed to update todo' })
   }
 }
-
 // DELETE
 export const deleteTodo = async (req: Request, res: Response) => {
   try {
