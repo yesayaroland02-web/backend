@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "ts-node-dev src/server.ts",
-    "build": "tsc && prisma generate",
+    "build": "tsc && prisma generate --schema=./prisma/schema.prisma",
     "start": "node dist/server.js",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate --schema=./prisma/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
