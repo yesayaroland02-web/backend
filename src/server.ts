@@ -6,20 +6,18 @@ import categoryRoutes from './routes/categoryRoutes'
 
 const app = express()
 
-// CORS (AMAN UNTUK VERCEL)
-app.use(cors({
-  origin: "*"
-}))
-
+app.use(cors({ origin: "*" }))
 app.use(express.json())
 
-// ROUTES
+app.get('/', (req, res) => {
+  res.json({ message: 'API running 🚀' })
+})
+
 app.use('/api/todos', todoRoutes)
 app.use('/api/categories', categoryRoutes)
 
-// PORT RAILWAY WAJIB ENV
-const PORT: number = Number(process.env.PORT) || 5000
+const PORT = process.env.PORT || 5000
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`)
 })
