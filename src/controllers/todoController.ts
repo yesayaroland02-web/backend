@@ -29,6 +29,7 @@ export const getTodoById = async (req: Request, res: Response) => {
 
     const todo = await prisma.todo.findUnique({
       where: { id },
+      include: { category: true },
     })
 
     res.json(todo)
@@ -38,8 +39,8 @@ export const getTodoById = async (req: Request, res: Response) => {
   }
 }
 
-// CREATE
-export const createTodo = async (req, res) => {
+// CREATE TODO
+export const createTodo = async (req: Request, res: Response) => {
   try {
     const { title, description, priority, category_id } = req.body
 
@@ -50,13 +51,13 @@ export const createTodo = async (req, res) => {
         priority,
         category: category_id
           ? {
-              connect: { id: Number(category_id) }
+              connect: { id: Number(category_id) },
             }
-          : undefined
+          : undefined,
       },
       include: {
-        category: true
-      }
+        category: true,
+      },
     })
 
     res.json(todo)
@@ -66,8 +67,8 @@ export const createTodo = async (req, res) => {
   }
 }
 
-// UPDATE
-export const updateTodo = async (req, res) => {
+// UPDATE TODO
+export const updateTodo = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id)
     const { title, description, priority, category_id } = req.body
@@ -80,15 +81,15 @@ export const updateTodo = async (req, res) => {
         priority,
         category: category_id
           ? {
-              connect: { id: Number(category_id) }
+              connect: { id: Number(category_id) },
             }
           : {
-              disconnect: true
-            }
+              disconnect: true,
+            },
       },
       include: {
-        category: true
-      }
+        category: true,
+      },
     })
 
     res.json(todo)
@@ -97,7 +98,8 @@ export const updateTodo = async (req, res) => {
     res.status(500).json({ message: 'Failed to update todo' })
   }
 }
-// DELETE
+
+// DELETE TODO
 export const deleteTodo = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id)
@@ -113,7 +115,7 @@ export const deleteTodo = async (req: Request, res: Response) => {
   }
 }
 
-// TOGGLE
+// TOGGLE TODO
 export const toggleTodo = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id)
